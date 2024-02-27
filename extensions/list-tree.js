@@ -58,6 +58,68 @@ class Node {
 
     return null;
   }
+
+  remove(data, parentNode) {
+    if (this.data === data) {
+      
+      if (!this.left && !this.right) { // the case when a found node is leaf 
+        
+        if (this === parentNode.left) {
+          parentNode.left = null;
+        } else {
+          parentNode.right = null;
+        }
+
+        return;
+      }
+
+      if (!this.left) { // the case when a found node doesn't have left child
+        
+        if (this === parentNode.left) {
+          parentNode.left = this.right;
+        } else {
+          parentNode.right = this.right;
+        }
+
+        return;
+      }
+
+      if (!this.right) { // the case when a found node doesn't have right child
+        
+        if (this === parentNode.left) {
+          parentNode.left = this.left;
+        } else {
+          parentNode.right = this.left;
+        }
+
+        return;
+      }
+
+      let min = this.right;
+      let parentOfMin = this;
+      while (min.left) {
+        parentOfMin = min;
+        min = min.left;
+      }
+
+      this.data = parentOfMin.left.data;
+      
+      if (parentOfMin.left.right) {
+        parentOfMin.left = parentOfMin.left.right;
+      } else {
+        parentOfMin.left = null;
+      }
+    }
+
+    if (data < this.data && this.left) {
+      this.left.remove(data, this);
+    }
+
+    if (data > this.data && this.right) {
+      this.right.remove(data, this);
+    }
+    
+  }
 }
 
 module.exports = {
