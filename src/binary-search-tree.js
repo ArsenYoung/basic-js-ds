@@ -24,17 +24,11 @@ class BinarySearchTree {
   }
 
   has(data) {
-    if (this.rootNode.data === data) {
-        return true;
+    if (!this.rootNode) {
+        return false;
     }
 
-    if (data < this.rootNode.data) {
-        return this.rootNode.left.has(data);
-    }
-
-    if (data > this.rootNode.data) {
-        return this.rootNode.right.has(data);
-    }
+    return this.rootNode.has(data);
   }
 
   find(data) {
@@ -53,7 +47,33 @@ class BinarySearchTree {
 
   remove(data) {
     if (this.rootNode) {
-      this.rootNode.remove(data, this.rootNode);
+      if (this.rootNode.data === data) {
+        if (!this.rootNode.right && !this.rootNode.left) {
+          this.rootNode = null;
+          return;
+        }
+        if (!this.rootNode.right) {
+          this.rootNode = this.rootNode.left;
+          return;
+        }
+
+        let min = this.rootNode.right;
+        let parentOfMin = this;
+        while (min.left) {
+          parentOfMin = min;
+          min = min.left;
+        }
+
+        this.rootNode.data = parentOfMin.left.data;
+        
+        if (parentOfMin.left.right) {
+          parentOfMin.left = parentOfMin.left.right;
+        } else {
+          parentOfMin.left = null;
+        }
+      } else {
+        this.rootNode.remove(data, this.rootNode);
+      }
     }
   }
 

@@ -32,11 +32,11 @@ class Node {
       return true;
     }
 
-    if (data < this.data && this.left !== null) {
+    if (data < this.data && this.left) {
         return this.left.has(data);
     }
 
-    if (data > this.data && this.right !== null) {
+    if (data > this.data && this.right) {
         return this.right.has(data);
     }
 
